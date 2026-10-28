@@ -1,3 +1,10 @@
+# astrbot_plugin_mahjong © 2026 SR3MP
+# Based on Xpilot © 2025 Fyisvia Virell — https://mj.fyisvia.com
+# Licensed under AGPL-3.0 with Additional Terms (see LICENSE).
+# Note: Certain non-code assets (including datasets, content sets, or media files)
+# are excluded from the AGPL license and may NOT be publicly published or redistributed
+# without written permission from the author. (See LICENSE for details)
+
 """
 立直麻将工具插件 (AstrBot)
 ==========================
@@ -34,7 +41,6 @@ HELP_TEXT = """🀄 立直麻将工具 (雀魂/天凤规则)
 牌理: 牌理 <牌面>
   输入手牌, 自动算向听/进张/切牌
   例: 牌理 123m234p345s11z
-  少于13张会自动摸牌补齐
 
 和牌: 和牌 <牌面>[+和牌] [选项]
   例: 和牌 123m234p456s11z+1z 自 庄
@@ -56,7 +62,7 @@ HELP_TEXT = """🀄 立直麻将工具 (雀魂/天凤规则)
   [1111m]或【1111m】 暗杠"""
 
 
-@register("astrbot_plugin_mahjong", "SR3MP", "立直麻将工具", "1.0.0")
+@register("astrbot_plugin_mahjong", "SR3MP", "立直麻将工具", "1.1.0")
 class RiichiPlugin(Star):
     def __init__(self, context: Context, config=None):
         super().__init__(context)
