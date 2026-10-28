@@ -1,0 +1,16 @@
+name: astrbot_plugin_mahjong
+display_name: 立直麻将工具
+desc: 立直麻将工具插件：牌理分析、向听数、听牌检测、和牌役数/符数/点数计算。支持雀魂/天凤规则。
+short_desc: 立直麻将工具
+version: 1.0.0
+author: SR3MP
+repo: https://github.com/SR3MP/astrbot_plugin_mahjong
+support_platforms:
+  - aiocqhttp
+  - qq_official
+  - qq_official_webhook
+  - webchat
+astrbot_version: '>=4.0.0'
+tags:
+  - 麻将
+  - 游戏
