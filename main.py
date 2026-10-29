@@ -17,7 +17,6 @@
     和牌 123m234p456s11z+1z 自 立 场风东 自风东 d6m
     麻将帮助
 """
-import re
 import random
 from pathlib import Path
 
@@ -99,7 +98,7 @@ AGARI_HELP = """🀄 和牌帮助 (雀魂/天凤规则)
   [1m]或【1m】 暗杠简写(1张代表4张)"""
 
 
-@register("astrbot_plugin_mahjong", "SR3MP", "立直麻将工具", "1.1.0")
+@register("astrbot_plugin_mahjong", "SR3MP", "立直麻将工具", "1.2.0")
 class RiichiPlugin(Star):
     def __init__(self, context: Context, config=None):
         super().__init__(context)
@@ -128,7 +127,7 @@ class RiichiPlugin(Star):
         cc = [0] * 34
         for t in tiles:
             cc[t] += 1
-        if riichi._shanten_solver.calc(cc) == -1:
+        if riichi.is_winning_hand(cc):
             sorted_tiles = riichi.sort_tiles(tiles)
             img = pailli_image.render_pailli(sorted_tiles, len(tiles), -1, [], [], None, red_tiles=red_tiles)
             img_path = str(TEMP_DIR / "pailli_result.png")
