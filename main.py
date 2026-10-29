@@ -124,7 +124,7 @@ class RiichiPlugin(Star):
         cc = [0] * 34
         for t in tiles:
             cc[t] += 1
-        if riichi.is_winning_hand(cc):
+        if riichi._shanten_solver.calc(cc) == -1:
             sorted_tiles = riichi.sort_tiles(tiles)
             img = pailli_image.render_pailli(sorted_tiles, len(tiles), -1, [], [], None, red_tiles=red_tiles)
             img_path = str(TEMP_DIR / "pailli_result.png")

@@ -543,7 +543,7 @@ class YakuList:
         green = {'2s','3s','4s','6s','8s','6z'}
         return all(t in green for m in hand for t in m['tiles'])
 
-    def checkChinrouto(self, hand):
+    def checkChinroutou(self, hand):
         return all(t in TERMINAL_STR for m in hand for t in m['tiles'])
 
     def checkSuuankou(self, hand, isMenzen, isTsumo, waitType):

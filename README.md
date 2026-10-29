@@ -89,7 +89,8 @@
 
 ### v1.2.0
 - 清理冗余无效代码（删除未使用的 `str_to_idx`、`sort_tiles_str`、`checkMenzenTsumo`）
-- 新增公开接口 `is_winning_hand`，main.py 不再直接调用内部 `_shanten_solver`
+- 修复牌理图宽度被裁剪的问题（按实际内容计算宽度）
+- 修复插件重载后仍加载旧版的问题（改用相对导入）
 
 ## 许可证
 
