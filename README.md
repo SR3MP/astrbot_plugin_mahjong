@@ -81,6 +81,12 @@
 
 核心算法（向听计算、役种判定、符/点数计算）移植自 [Xpilot](https://github.com/fyisvia/Xpilot) 项目。
 
+## 更新记录
+
+### v1.2.0
+- 清理冗余无效代码（删除未使用的 `str_to_idx`、`sort_tiles_str`、`checkMenzenTsumo`）
+- 新增公开接口 `is_winning_hand`，main.py 不再直接调用内部 `_shanten_solver`
+
 ## 许可证
 
 AGPL-3.0，含附加条款（详见 [LICENSE](LICENSE)）。
