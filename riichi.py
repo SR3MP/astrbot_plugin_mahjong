@@ -123,6 +123,9 @@ def _classify(tiles, open_):
     elif len(tiles)==4:
         if all(t==tiles[0] for t in tiles): return {'type':'quad','tile':tiles[0],'open':open_}
         raise ValueError(f'无效杠子: {tiles}')
+    elif len(tiles)==1 and not open_:
+        # 暗杠便捷输入: [1m] 或 【1m】 = 1111m
+        return {'type':'quad','tile':tiles[0],'open':False}
     raise ValueError(f'面子张数无效: {len(tiles)}')
 
 def sort_tiles(tiles): return sorted(tiles)
@@ -540,7 +543,7 @@ class YakuList:
         green = {'2s','3s','4s','6s','8s','6z'}
         return all(t in green for m in hand for t in m['tiles'])
 
-    def checkChinroutou(self, hand):
+    def checkChinrouto(self, hand):
         return all(t in TERMINAL_STR for m in hand for t in m['tiles'])
 
     def checkSuuankou(self, hand, isMenzen, isTsumo, waitType):
