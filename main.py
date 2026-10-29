@@ -48,7 +48,43 @@ HELP_TEXT = """🀄 立直麻将工具 (雀魂/天凤规则)
   门清不写条件默认荣和非立直
 
 选项 (全称或缩写均可):
-  自摸/自, 荣和        (默认荣和)
+  自摸/自, 荣和/荣    (默认荣和)
+  立直/立, 一发/一     (缩写可连写: 立一自)
+  场风东/南/西/北      (默认东)
+  自风东/南/西/北      (默认东)
+  宝牌1 / d1 / dora1 (宝牌个数, 不区分大小写)
+  海底/河底/岭上/枪杠
+  天和/地和
+  亲家/子家结果自动同时输出
+
+和牌副露 (仅和牌命令):
+  (111z)或（111z）  明刻/明顺/明杠
+  [1111m]或【1111m】 暗杠
+  [1m]或【1m】 暗杠简写(1张代表4张)"""
+
+
+PAILLI_HELP = """🀄 牌理帮助 (雀魂/天凤规则)
+
+牌理: 牌理 <牌面>
+  输入手牌, 自动算向听/进张/切牌
+  例: 牌理 123m234p345s11z
+  例: 牌理 1234567m234p111z
+
+牌面格式:
+  万子 1m~9m  饼子 1p~9p  索子 1s~9s
+  字牌 1z~7z (东南西北白发中)
+  赤牌 0m/0p/0s"""
+
+
+AGARI_HELP = """🀄 和牌帮助 (雀魂/天凤规则)
+
+和牌: 和牌 <牌面>[+和牌] [选项]
+  例: 和牌 123m234p456s11z+1z 自 庄
+  例: 和牌 123m(444p)345s11z+1z 荣和
+  门清不写条件默认荣和非立直
+
+选项 (全称或缩写均可):
+  自摸/自, 荣和/荣    (默认荣和)
   立直/立, 一发/一     (缩写可连写: 立一自)
   场风东/南/西/北      (默认东)
   自风东/南/西/北      (默认东)
@@ -233,6 +269,14 @@ class RiichiPlugin(Star):
     @filter.command("麻将帮助", alias={"立直帮助"})
     async def on_help(self, event: AstrMessageEvent):
         yield event.plain_result(HELP_TEXT)
+
+    @filter.command("牌理帮助")
+    async def on_pailli_help(self, event: AstrMessageEvent):
+        yield event.plain_result(PAILLI_HELP)
+
+    @filter.command("和牌帮助")
+    async def on_agari_help(self, event: AstrMessageEvent):
+        yield event.plain_result(AGARI_HELP)
 
     # ---------- 选项解析 ----------
     def _parse_options(self, text):
