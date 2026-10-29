@@ -45,7 +45,7 @@ HELP_TEXT = """🀄 立直麻将工具 (雀魂/天凤规则)
 和牌: 和牌 <牌面>[+和牌] [选项]
   例: 和牌 123m234p456s11z+1z 自 庄
   例: 和牌 123m(444p)345s11z+1z 荣和
-  门清时不写条件会询问是否立直/自摸
+  门清不写条件默认荣和非立直
 
 选项 (全称或缩写均可):
   自摸/自, 荣和        (默认荣和)
@@ -192,17 +192,8 @@ class RiichiPlugin(Star):
         # 判断是否门清
         is_menzen = self._check_menzen(hand_text)
 
-        # 门清且未指定立直/自摸 → 交互询问
-        if is_menzen and not options.get('is_riichi') and not options.get('is_tsumo'):
-            yield event.plain_result("门清和牌，请补充条件\n立=立直  自=自摸  立自=两者\n荣和=门前荣和(默认)")
-            try:
-                reply = await self._wait_user_input(event, timeout=30)
-                if reply:
-                    extra_opts = {}
-                    self._parse_opt_token(reply.strip(), extra_opts)
-                    options.update(extra_opts)
-            except Exception:
-                pass
+        # 门清且未指定立直/自摸 → 默认荣和非立直，输出时加提示
+        need_hint = is_menzen and not options.get('is_riichi') and not options.get('is_tsumo')
 
         # 同时计算亲家和子家
         opts_dealer = dict(options, is_dealer=True)
@@ -228,22 +219,8 @@ class RiichiPlugin(Star):
         pailli_image.save_pailli_image(img, img_path)
         yield event.image_result(img_path)
 
-    async def _wait_user_input(self, event, timeout=30):
-        """等待用户回复，返回文本"""
-        from astrbot.api.util import session_waiter, SessionController
-
-        @session_waiter(timeout)
-        async def waiter(controller: SessionController, ev: AstrMessageEvent):
-            txt = ev.message_str.strip()
-            if txt:
-                controller._reply = txt
-                controller.stop()
-
-        try:
-            await waiter(event)
-            return getattr(event, '_reply', None)
-        except TimeoutError:
-            return None
+        if need_hint:
+            yield event.plain_result("※ 门清默认按荣和非立直计算，如需指定请补 立/自/立自")
 
     def _check_menzen(self, hand_text):
         """判断手牌是否门清 (无副露括号)"""
