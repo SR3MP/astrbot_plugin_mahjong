@@ -83,7 +83,10 @@ TW, TH = 52, 74  # tile display size (scaled from 70x100)
 PAD = 20
 MARGIN = 10
 WRAP_GAP = 4  # vertical gap between wrapped sub-rows
-MAX_CONTENT_WIDTH = 620  # max content width before wrapping
+MAX_CONTENT_WIDTH = 620  # max content width before wrapping (for waiting-tile rows)
+# The hand-tile row is never wrapped, so the image must be wide enough for it.
+# This is the real minimum content width; it can exceed MAX_CONTENT_WIDTH.
+MIN_IMG_WIDTH = 300
 
 def _measure_wait_tile(draw, font_small):
     """Measure the width of one wait tile + count text."""
@@ -153,6 +156,7 @@ def render_pailli(sorted_tiles, n, shanten, best_discards, discard_info, kinds=N
     # --- Measure row widths and count wrapped lines ---
     wait_tile_w = _measure_wait_tile(tmp_draw, font_small)
     
+    # Hand-tile row width (never wrapped; determines the minimum image width)
     hand_row_width = n * TW + (n - 1) * 2
     if drawn_tile is not None:
         hand_row_width += 8  # separator gap before drawn tile
@@ -178,8 +182,11 @@ def render_pailli(sorted_tiles, n, shanten, best_discards, discard_info, kinds=N
         tw2, _ = _text_size(tmp_draw, total_text, font_small)
         total_w = tw2 + 6
         
-        # Simulate wrapping to count lines
-        avail_width = MAX_CONTENT_WIDTH - indent
+        # The content width available to this row = the widest of (hand row, MIN)
+        # minus the indent. The hand row determines the canvas, so use it here
+        # so wrapping is consistent with the actual draw width.
+        row_content_w = max(hand_row_width, MIN_IMG_WIDTH)
+        avail_width = row_content_w - indent
         x = 0
         num_lines = 1
         row_w = indent
@@ -207,10 +214,9 @@ def render_pailli(sorted_tiles, n, shanten, best_discards, discard_info, kinds=N
         row_layouts.append((dt, sorted_waits, total, num_lines, indent, total_text, total_w))
         max_row_width = max(max_row_width, row_w)
     
-    content_width = max(hand_row_width, max_row_width, 300)
-    # Cap width
-    if content_width > MAX_CONTENT_WIDTH:
-        content_width = MAX_CONTENT_WIDTH
+    # Content width = the wider of the hand row and the widest content row.
+    # The hand-tile row is never wrapped, so it always fits; never cap it.
+    content_width = max(hand_row_width, max_row_width, MIN_IMG_WIDTH)
     img_width = content_width + PAD * 2
     
     # --- Calculate height ---
@@ -317,7 +323,8 @@ def render_pailli(sorted_tiles, n, shanten, best_discards, discard_info, kinds=N
             x += indent
         
         # Wait tiles with wrapping
-        avail_width = MAX_CONTENT_WIDTH - indent
+        # Use the SAME avail width as in the measure phase so the wrap points match.
+        avail_width = max(hand_row_width, MIN_IMG_WIDTH) - indent
         line_x = 0
         first_on_line = True
         

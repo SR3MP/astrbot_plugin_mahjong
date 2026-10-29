@@ -1,6 +1,10 @@
 # astrbot_plugin_mahjong
 
+![logo](logo.png)
+
 立直麻将工具插件（AstrBot），适用于雀魂/天凤规则。
+
+当前版本：**1.2.0**
 
 ## 功能
 
@@ -90,3 +94,7 @@
 ## 许可证
 
 AGPL-3.0，含附加条款（详见 [LICENSE](LICENSE)）。
+
+## 更新日志
+
+详见 [CHANGELOG](CHANGELOG.md)。

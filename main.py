@@ -28,11 +28,8 @@ PLUGIN_DIR = Path(__file__).resolve().parent
 TEMP_DIR = PLUGIN_DIR / "tmp"
 TEMP_DIR.mkdir(exist_ok=True)
 
-import sys
-sys.path.insert(0, str(PLUGIN_DIR))
-
-import riichi
-import pailli_image
+from . import riichi
+from . import pailli_image
 
 
 HELP_TEXT = """🀄 立直麻将工具 (雀魂/天凤规则)

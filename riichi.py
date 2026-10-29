@@ -582,8 +582,10 @@ class YakuList:
         valid_excl = dc_excl.get('1',0)==3 and dc_excl.get('9',0)==3
         for i in range(2,9):
             valid_excl = valid_excl and dc_excl.get(str(i),0)==1
-        if pure: return valid and valid_excl
-        else: return valid and not valid_excl
+        wt_digit = int(hand[wmi]['tiles'][wti][0])
+        wt_is_edge = wt_digit in (1,9)
+        if pure: return valid and valid_excl and wt_is_edge
+        else: return valid and not (valid_excl and wt_is_edge)
 
     def checkChuurenPoutou(self, hand, isMenzen, wmi, wti):
         return self._check_chuuren(hand, isMenzen, wmi, wti, False)
